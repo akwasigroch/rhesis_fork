@@ -1,6 +1,6 @@
 # 🚀 Rhesis Release Guide
 
-This guide covers the complete release process for the Rhesis platform, including individual component releases and coordinated platform-wide releases.
+This guide covers the complete release pr   ocess for the Rhesis platform, including individual component releases and coordinated platform-wide releases.
 
 ## 📋 Table of Contents
 
