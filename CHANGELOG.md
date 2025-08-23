@@ -1,4 +1,4 @@
-# Rhesis Changelog
+# Rhesis Changelog 
 
 All notable changes to the Rhesis project will be documented in this file.
 
