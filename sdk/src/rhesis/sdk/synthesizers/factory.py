@@ -7,12 +7,12 @@ based on enum values, allowing for type-safe and extensible synthesizer instanti
 
 from enum import Enum
 from typing import Any, Dict, Type
-
+from rhesis.sdk.synthesizers.prompt_synthesizer import PromptSynthesizer
 import rhesis.sdk
 from rhesis.sdk.entities.test_set import TestSet
 from rhesis.sdk.synthesizers.base import TestSetSynthesizer
 from rhesis.sdk.synthesizers.paraphrasing_synthesizer import ParaphrasingSynthesizer
-from rhesis.sdk.synthesizers.prompt_synthesizer import PromptSynthesizer
+
 
 
 class SynthesizerType(str, Enum):
