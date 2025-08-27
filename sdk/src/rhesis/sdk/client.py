@@ -1,7 +1,6 @@
-from rhesis.sdk.config import get_api_key, get_base_url
 from typing import Optional
 
-
+from rhesis.sdk.config import get_api_key, get_base_url
 
 
 class Client:
