@@ -7,7 +7,7 @@ from rhesis.sdk.client import Client
 
 
 class LLMService:
-    """Service for interacting with the LLM API endpoints."""
+    """Service for interacting with the LLM API endpoints. sdfsdf"""
 
     def __init__(self) -> None:
         self.client = Client()
