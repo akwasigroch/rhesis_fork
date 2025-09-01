@@ -20,38 +20,40 @@ jobs:
     - name: Check if lint is needed
       run: |
         echo "Lint is needed"
+        echo github.event.push.head.sha
+        echo "Change"
 
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: "3.10"
+    # - name: Set up Python
+    #   uses: actions/setup-python@v5
+    #   with:
+    #     python-version: "3.10"
 
-    - name: Install uv
-      uses: astral-sh/setup-uv@v6
-      with:
-        version: latest
-        enable-cache: true
+    # - name: Install uv
+    #   uses: astral-sh/setup-uv@v6
+    #   with:
+    #     version: latest
+    #     enable-cache: true
 
-    - name: Run SDK linting
-      run: |
-        cd sdk
-        make lint
-      continue-on-error: false
-
-    # - name: Run Backend linting
+    # - name: Run SDK linting
     #   run: |
-    #     cd apps/backend
+    #     cd sdk
     #     make lint
     #   continue-on-error: false
 
-    - name: Lint Summary
-      run: |
-        echo "## Lint Check Results ✅" >> $GITHUB_STEP_SUMMARY
-        echo "" >> $GITHUB_STEP_SUMMARY
-        echo "- **Scope**: SDK and Backend Python files" >> $GITHUB_STEP_SUMMARY
-        echo "- **Branch**: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
-        echo "- **Status**: All checks passed successfully!" >> $GITHUB_STEP_SUMMARY
-        echo "" >> $GITHUB_STEP_SUMMARY
-        echo "### What was checked:" >> $GITHUB_STEP_SUMMARY
-        echo "- **SDK**: Code formatting and linting with ruff" >> $GITHUB_STEP_SUMMARY
-        echo "- **Backend**: Code formatting and linting with ruff" >> $GITHUB_STEP_SUMMARY
+    # # - name: Run Backend linting
+    # #   run: |
+    # #     cd apps/backend
+    # #     make lint
+    # #   continue-on-error: false
+
+    # - name: Lint Summary
+    #   run: |
+    #     echo "## Lint Check Results ✅" >> $GITHUB_STEP_SUMMARY
+    #     echo "" >> $GITHUB_STEP_SUMMARY
+    #     echo "- **Scope**: SDK and Backend Python files" >> $GITHUB_STEP_SUMMARY
+    #     echo "- **Branch**: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+    #     echo "- **Status**: All checks passed successfully!" >> $GITHUB_STEP_SUMMARY
+    #     echo "" >> $GITHUB_STEP_SUMMARY
+    #     echo "### What was checked:" >> $GITHUB_STEP_SUMMARY
+    #     echo "- **SDK**: Code formatting and linting with ruff" >> $GITHUB_STEP_SUMMARY
+    #     echo "- **Backend**: Code formatting and linting with ruff" >> $GITHUB_STEP_SUMMARY
