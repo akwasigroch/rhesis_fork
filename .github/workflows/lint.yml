@@ -22,6 +22,7 @@ jobs:
         echo "Lint is needed"
         echo "${{ github.event.push.commits }}"
         echo "Change"
+        echo "next change"
 
     # - name: Set up Python
     #   uses: actions/setup-python@v5
