@@ -20,7 +20,7 @@ jobs:
     - name: Check if lint is needed
       run: |
         echo "Lint is needed"
-        echo github.event.push.head.sha
+        echo ${github.event.push.head.sha}
         echo "Change"
 
     # - name: Set up Python
