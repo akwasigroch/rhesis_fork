@@ -2,10 +2,11 @@ name: Lint Check
 
 on:
   workflow_dispatch:
-  pull_request:
-    branches: [ main ]
-    paths:
-      - 'sdk/**'
+  push:
+  # pull_request:
+  #   branches: [ main ]
+  #   paths:
+  #     - 'sdk/**'
 
 jobs:
   lint:
@@ -15,6 +16,10 @@ jobs:
       uses: actions/checkout@v4
       with:
         fetch-depth: 0  # Needed for git diff
+    
+    - name: Check if lint is needed
+      run: |
+        echo "Lint is needed"
 
     - name: Set up Python
       uses: actions/setup-python@v5
