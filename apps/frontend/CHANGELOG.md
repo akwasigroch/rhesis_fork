@@ -7,6 +7,49 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.1] - 2025-10-09
+
+### Changed
+
+- Merge pull request #528 from rhesis-ai/fix/no-token-display-screen
+- fix: resolve duplicate import ESLint error in TokensGrid
+- fix: improve token deletion confirmation message
+- fix: align token empty state with theme (issue #485)
+- fix: increase bottom margin for pie chart legend overflow prevention
+- Merge pull request #522 from rhesis-ai/feature/soft-deletion-for-entities
+- refactor: standardize delete modal messages across all entities
+- refactor: update delete modal message for soft deletion
+- feat: add friendly error page for non-existent test runs
+- fix: use delete endpoint for test runs instead of status update
+- fix(frontend): remove step prefix from evaluation steps edit fields
+- refactor: use styled API instead of sx prop for list in DangerZone
+- style: format sx prop in DangerZone for better readability
+- fix: replace hardcoded styles with theme values in DangerZone
+- feat: implement leave organization feature
+- fix: escape apostrophes in DomainSettingsForm text
+- feat: add lint:errors script to show only linting errors
+- fix: remove unused ReactElement import from navigation types
+- feat: add organization settings page
+- fix: resolve user deletion 500 error (#463)
+- feat(db): add user deletion procedure that preserves organization
+- fix(ui): improve error logging and rate limit messages
+- feat(ui): update team management UI for soft delete
+- fix: change field label from 'Title' to 'Name'
+- style: fix prettier formatting issues
+- feat: add editable test set title functionality
+- style: fix prettier formatting in TasksSection
+- test(frontend): add focused tests for infinite loading fix
+- fix(frontend): resolve infinite loading in tasks section
+- fix(test-runs): resolve flickering data grid on test runs page
+- style: improve code formatting in TestDetailCharts
+- style: replace hardcoded values with theme tokens
+- refactor(ui): improve vertical centering and remove inline styles
+- feat(ui): refactor test detail charts with dynamic data and enhanced UI
+- feat(api): add method to fetch individual test statistics
+- feat(api): add TypeScript interfaces for individual test statistics
+
+
+
 ## [0.3.0] - 2025-10-02
 
 ### Added

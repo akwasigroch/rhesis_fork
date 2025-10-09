@@ -13,6 +13,28 @@ This is the main changelog for the entire Rhesis repository. For detailed compon
 
 ## [Unreleased]
 
+## [0.3.1] - 2025-10-09
+
+### Platform Release
+
+This release includes the following component versions:
+- **Backend 0.3.1**
+- **Frontend 0.3.1**
+
+### Summary of Changes
+
+**Backend v0.3.1:**
+Key changes include: feat: implement hash-based token lookup for encrypted tokens, fix(tokens): add organization filtering and accurate token count....
+
+**Frontend v0.3.1:**
+Key changes include: Merge pull request #528 from rhesis-ai/fix/no-token-display-screen, fix: resolve duplicate import ESLint error in TokensGrid....
+
+See individual component changelogs for detailed changes:
+- [Backend Changelog](apps/backend/CHANGELOG.md)
+- [Frontend Changelog](apps/frontend/CHANGELOG.md)
+
+
+
 ## [0.3.0] - 2025-10-02
 
 ### Platform Release
