@@ -41,15 +41,15 @@ on:
           - minor
           - major
 
-          polyphemus_bump:
-            description: 'Polyphemus version bump'
-            required: false
-            type: choice
-            options:
-              - ""
-              - patch
-              - minor
-              - major
+      polyphemus_bump:
+        description: 'Polyphemus version bump'
+        required: false
+        type: choice
+        options:
+          - ""
+          - patch
+          - minor
+          - major
 
 jobs:
   update-release-config:
