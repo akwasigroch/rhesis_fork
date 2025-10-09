@@ -132,7 +132,7 @@ def check_prerequisites(repo_root: Path, gemini_api_key: Optional[str] = None) -
         return False, ""
     
     # Check for required tools
-    required_tools = ["git", "jq", "python3"]
+    required_tools = ["git", "uv"]
     for tool in required_tools:
         if not command_exists(tool):
             error(f"{tool} is not installed. Please install it first.")
