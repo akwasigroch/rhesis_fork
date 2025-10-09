@@ -1,5 +1,5 @@
 {
-  "platform": "patch",
-  "backend": "patch",
-  "frontend": "patch"
+  "platform": "minor",
+  "frontend": "major",
+  "sdk": "patch"
 }
