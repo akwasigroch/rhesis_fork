@@ -20,8 +20,15 @@ jobs:
         uses: astral-sh/setup-uv@v6
         with:
             version: latest
-
+      - name: Set up Git
+        run: |
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
           
       - name: Run release script
         run: |
           python3 .github/release sdk --minor
+          
+      - name: Push release branch
+        run: |
+          git push origin $(git branch --show-current)
