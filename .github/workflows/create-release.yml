@@ -81,7 +81,7 @@ jobs:
           
           # Create body with dynamic version changes
           PR_BODY="This PR contains the automated release changes for:
-          $(jq -r 'to_entries | map("- \(.key | ascii_upcase): \(.value)") | join("\n          ")' /tmp/version_changes.json)
+          $(jq -r 'to_entries | map("- \(.key | ascii_upcase): \(.value)") | join("\n")' /tmp/version_changes.json)
           
           ## Changes
           - Version files updated
