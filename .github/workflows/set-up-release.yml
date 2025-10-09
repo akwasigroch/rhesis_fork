@@ -40,6 +40,16 @@ on:
           - minor
           - major
 
+          polyphemus_bump:
+            description: 'Polyphemus version bump'
+            required: false
+            type: choice
+            options:
+              - ""
+              - patch
+              - minor
+              - major
+
 jobs:
   update-release-config:
     runs-on: ubuntu-latest
@@ -55,28 +65,58 @@ jobs:
             --arg backend "${{ github.event.inputs.backend_bump }}" \
             --arg frontend "${{ github.event.inputs.frontend_bump }}" \
             --arg sdk "${{ github.event.inputs.sdk_bump }}" \
+            --arg polyphemus "${{ github.event.inputs.polyphemus_bump }}" \
             '{
               platform: $platform,
               backend: $backend,
               frontend: $frontend,
-              sdk: $sdk
+              sdk: $sdk,
+              polyphemus: $polyphemus
             } | with_entries(select(.value != ""))' > release_config.json
+          
+          # Generate dynamic commit message
+          COMMIT_PARTS=()
+          if [ -n "${{ github.event.inputs.platform_bump }}" ]; then
+            COMMIT_PARTS+=("platform=${{ github.event.inputs.platform_bump }}")
+          fi
+          if [ -n "${{ github.event.inputs.backend_bump }}" ]; then
+            COMMIT_PARTS+=("backend=${{ github.event.inputs.backend_bump }}")
+          fi
+          if [ -n "${{ github.event.inputs.frontend_bump }}" ]; then
+            COMMIT_PARTS+=("frontend=${{ github.event.inputs.frontend_bump }}")
+          fi
+          if [ -n "${{ github.event.inputs.sdk_bump }}" ]; then
+            COMMIT_PARTS+=("sdk=${{ github.event.inputs.sdk_bump }}")
+          fi
+          if [ -n "${{ github.event.inputs.polyphemus_bump }}" ]; then
+            COMMIT_PARTS+=("polyphemus=${{ github.event.inputs.polyphemus_bump }}")
+          fi
+          
+        
+          COMMIT_MSG="Update release config: $(IFS=', '; echo "${COMMIT_PARTS[*]}")"
+          PR_TITLE_MSG="$(IFS=', '; echo "${COMMIT_PARTS[*]}")"
+      
+          echo "COMMIT_MESSAGE=$COMMIT_MSG" >> $GITHUB_ENV
+          echo "PR_TITLE_MESSAGE=$PR_TITLE_MSG" >> $GITHUB_ENV
           
           echo "Generated release_config.json:"
           cat release_config.json
+          echo "Commit message: $COMMIT_MSG"
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "Update release bumps: platform=${{ github.event.inputs.platform_bump }}, backend=${{ github.event.inputs.backend_bump }}, frontend=${{ github.event.inputs.frontend_bump }}"
-          title: "Release Bump: platform - ${{ github.event.inputs.platform_bump }}, backend - ${{ github.event.inputs.backend_bump }}, frontend - ${{ github.event.inputs.frontend_bump }}"
+          commit-message: ${{ env.COMMIT_MESSAGE }}
+          title: "Release Bump: ${{ env.PR_TITLE_MESSAGE }}"
           body: |
             ## Release Version Bumps
             
             - **Platform**: ${{ github.event.inputs.platform_bump }}
             - **Backend**: ${{ github.event.inputs.backend_bump }}
             - **Frontend**: ${{ github.event.inputs.frontend_bump }}
+            - **SDK**: ${{ github.event.inputs.sdk_bump }}
+            - **Polyphemus**: ${{ github.event.inputs.polyphemus_bump }}
             
             This PR updates the release configuration with the selected version bumps.
           branch: release-bump-${{ github.run_number }}
