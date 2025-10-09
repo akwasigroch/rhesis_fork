@@ -210,7 +210,7 @@ def bump_version(current_version: str, bump_type: str) -> str:
     return f"{major}.{minor}.{patch}"
 
 
-def update_version_file(component: str, new_version: str, repo_root: Path, dry_run: bool = False) -> bool:
+def update_version_file(component: str, new_version: str, repo_root: Path, dry_run: bool = False, component_bumps: dict[str, str] = None) -> bool:
     """Update version in configuration file"""
     if component == "platform":
         return _update_platform_version(new_version, repo_root, dry_run)
@@ -226,9 +226,10 @@ def update_version_file(component: str, new_version: str, repo_root: Path, dry_r
         from .utils import info
         info(f"Would update {config.config_file} version to: {new_version}")
         return True
-    
+    bump_type = component_bumps[component]
+
     if config.config_type == "pyproject":
-        return _update_pyproject_version(config_path, new_version, repo_root)
+        return _update_pyproject_version(config_path, bump_type)
     elif config.config_type == "package":
         return _update_package_version(config_path, new_version, repo_root)
     elif config.config_type == "requirements":
@@ -252,37 +253,18 @@ def _update_platform_version(new_version: str, repo_root: Path, dry_run: bool) -
     return True
 
 
-def _update_pyproject_version(config_path: Path, new_version: str, repo_root: Path) -> bool:
+def _update_pyproject_version(config_path: Path, bump_type: str) -> bool:
     """Update version in pyproject.toml"""
+    cmd = ["uv", "version", "--bump", bump_type, "--project", config_path, "--no-sync"]
+
     try:
-        # Try using tomli/tomli_w
-        try:
-            import tomli
-            import tomli_w
-            
-            with open(config_path, 'rb') as f:
-                data = tomli.load(f)
-            
-            data['project']['version'] = new_version
-            
-            with open(config_path, 'wb') as f:
-                tomli_w.dump(data, f)
-            
-            success(f"Updated {config_path.relative_to(repo_root)} version to: {new_version}")
-            return True
-            
-        except ImportError:
-            # Fallback to regex replacement
-            content = config_path.read_text()
-            pattern = r'(version\s*=\s*)["\']([^"\']*)["\']'
-            new_content = re.sub(pattern, rf'\1"{new_version}"', content)
-            config_path.write_text(new_content)
-            success(f"Updated {config_path.relative_to(repo_root)} version to: {new_version}")
-            return True
-            
-    except Exception as e:
-        error(f"Failed to update {config_path}: {e}")
+        result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+        return True
+    except subprocess.CalledProcessError as e:
+        print(e.stderr)
+        print(e.stdout)
         return False
+
 
 
 def _update_package_version(config_path: Path, new_version: str, repo_root: Path) -> bool:

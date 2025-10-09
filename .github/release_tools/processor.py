@@ -73,7 +73,7 @@ class ReleaseProcessor:
             log(f"Processing release for {component} v{new_version}...")
             
             # Update version files
-            if not update_version_file(component, new_version, self.repo_root, self.dry_run):
+            if not update_version_file(component, new_version, self.repo_root, self.dry_run, self.component_bumps):
                 return False
             
             # Get commit history
