@@ -113,11 +113,11 @@ jobs:
           body: |
             ## Release Version Bumps
             
-            - **Platform**: ${{ github.event.inputs.platform_bump }}
-            - **Backend**: ${{ github.event.inputs.backend_bump }}
-            - **Frontend**: ${{ github.event.inputs.frontend_bump }}
-            - **SDK**: ${{ github.event.inputs.sdk_bump }}
-            - **Polyphemus**: ${{ github.event.inputs.polyphemus_bump }}
+            ${{ github.event.inputs.platform_bump != 'none' && format('- **Platform**: {0}', github.event.inputs.platform_bump) || '' }}
+            ${{ github.event.inputs.backend_bump != 'none' && format('- **Backend**: {0}', github.event.inputs.backend_bump) || '' }}
+            ${{ github.event.inputs.frontend_bump != 'none' && format('- **Frontend**: {0}', github.event.inputs.frontend_bump) || '' }}
+            ${{ github.event.inputs.sdk_bump != 'none' && format('- **SDK**: {0}', github.event.inputs.sdk_bump) || '' }}
+            ${{ github.event.inputs.polyphemus_bump != 'none' && format('- **Polyphemus**: {0}', github.event.inputs.polyphemus_bump) || '' }}
             
             This PR updates the release configuration with the selected version bumps.
           branch: release-bump-${{ github.run_number }}
