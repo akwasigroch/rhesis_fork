@@ -8,7 +8,7 @@ on:
         required: false
         type: choice
         options:
-          - ""
+          - "none"
           - patch
           - minor
           - major
@@ -17,7 +17,7 @@ on:
         required: false
         type: choice
         options:
-          - ""
+          - "none"
           - patch
           - minor
           - major
@@ -26,7 +26,7 @@ on:
         required: false
         type: choice
         options:
-          - ""
+          - "none"
           - patch
           - minor
           - major
@@ -36,7 +36,7 @@ on:
         required: false
         type: choice
         options:
-          - ""
+          - "none"
           - patch
           - minor
           - major
@@ -46,7 +46,7 @@ on:
         required: false
         type: choice
         options:
-          - ""
+          - "none"
           - patch
           - minor
           - major
@@ -73,23 +73,23 @@ jobs:
               frontend: $frontend,
               sdk: $sdk,
               polyphemus: $polyphemus
-            } | with_entries(select(.value != ""))' > release_config.json
+            } | with_entries(select(.value != "" and .value != "none"))' > release_config.json
           
           # Generate dynamic commit message
           COMMIT_PARTS=()
-          if [ -n "${{ github.event.inputs.platform_bump }}" ]; then
+          if [ -n "${{ github.event.inputs.platform_bump }}" ] && [ "${{ github.event.inputs.platform_bump }}" != "none" ]; then
             COMMIT_PARTS+=("platform - ${{ github.event.inputs.platform_bump }}")
           fi
-          if [ -n "${{ github.event.inputs.backend_bump }}" ]; then
+          if [ -n "${{ github.event.inputs.backend_bump }}" ] && [ "${{ github.event.inputs.backend_bump }}" != "none" ]; then
             COMMIT_PARTS+=("backend - ${{ github.event.inputs.backend_bump }}")
           fi
-          if [ -n "${{ github.event.inputs.frontend_bump }}" ]; then
+          if [ -n "${{ github.event.inputs.frontend_bump }}" ] && [ "${{ github.event.inputs.frontend_bump }}" != "none" ]; then
             COMMIT_PARTS+=("frontend - ${{ github.event.inputs.frontend_bump }}")
           fi
-          if [ -n "${{ github.event.inputs.sdk_bump }}" ]; then
+          if [ -n "${{ github.event.inputs.sdk_bump }}" ] && [ "${{ github.event.inputs.sdk_bump }}" != "none" ]; then
             COMMIT_PARTS+=("sdk - ${{ github.event.inputs.sdk_bump }}")
           fi
-          if [ -n "${{ github.event.inputs.polyphemus_bump }}" ]; then
+          if [ -n "${{ github.event.inputs.polyphemus_bump }}" ] && [ "${{ github.event.inputs.polyphemus_bump }}" != "none" ]; then
             COMMIT_PARTS+=("polyphemus - ${{ github.event.inputs.polyphemus_bump }}")
           fi
           
