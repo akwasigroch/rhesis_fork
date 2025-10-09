@@ -1,6 +1,3 @@
 {
-  "platform": "minor",
-  "backend": "major",
-  "frontend": "minor",
-  "sdk": "major"
+  "frontend": "minor"
 }
