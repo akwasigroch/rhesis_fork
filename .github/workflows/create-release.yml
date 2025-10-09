@@ -50,7 +50,7 @@ jobs:
           
       - name: Run release script
         run: |
-          python3 .github/release sdk --minor
+          python3 .github/release platform --$PLATFORM_BUMP backend --$BACKEND_BUMP frontend --$FRONTEND_BUMP
           
       - name: Commit changes
         run: |
