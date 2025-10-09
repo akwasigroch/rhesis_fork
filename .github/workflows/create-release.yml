@@ -83,12 +83,16 @@ jobs:
           PR_BODY="This PR contains the automated release changes for:
           $(jq -r 'to_entries | map("- \(.key | ascii_upcase): \(.value)") | join("\n")' /tmp/version_changes.json)
           
+
+          ## Before merging
+          - [ ] Run backend and sdk tests
+          
           ## Changes
           - Version files updated
           - Changelog updated
           - Release branch created
           
-          Please review the changes before merging."
+          ⚠️⚠️ THE MERGE OF THIS PR WILL TRIGGER THE RELEASE PROCESS. PLEASE REVIEW THE CHANGES BEFORE MERGING. ⚠️⚠️"
           
           gh pr create --title "$PR_TITLE" \
             --body "$PR_BODY" \
