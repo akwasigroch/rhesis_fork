@@ -152,52 +152,17 @@ def _try_install_toml_libraries() -> bool:
 
 def _get_pyproject_version(config_path: Path) -> str:
     """Get version from pyproject.toml"""
+    cmd = ["uv", "version", "--short", "--project", config_path]
+
     try:
-        import tomli
-        with open(config_path, 'rb') as f:
-            data = tomli.load(f)
-        return data['project']['version']
-    except ImportError:
-        try:
-            import toml
-            with open(config_path, 'r') as f:
-                data = toml.load(f)
-            return data['project']['version']
-        except ImportError:
-            from .utils import warn, error, info
-            
-            warn("TOML parser libraries not found.")
-            
-            # Try automatic installation
-            if _try_install_toml_libraries():
-                # Retry parsing after installation
-                try:
-                    import tomli
-                    with open(config_path, 'rb') as f:
-                        data = tomli.load(f)
-                    return data['project']['version']
-                except Exception as e:
-                    error(f"Still failed to parse after installation: {e}")
-                    raise RuntimeError(f"TOML parser installation succeeded but parsing failed: {config_path}")
-            
-            # Check for virtual environment setup if auto-install failed
-            venv_hint = _check_virtual_environments()
-            if venv_hint:
-                warn(f"Environment issue detected: {venv_hint}")
-                warn("Then run: pip install tomli tomli-w")
-            else:
-                warn("If using a virtual environment, make sure it's activated first")
-            
-            error(f"Cannot read version from {config_path}")
-            raise RuntimeError(f"TOML parser not available for {config_path}")
-    except KeyError as e:
-        from .utils import error
-        error(f"Missing version field in {config_path}: {e}")
-        raise
-    except Exception as e:
-        from .utils import error
-        error(f"Failed to parse {config_path}: {e}")
-        raise
+        result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+    except subprocess.CalledProcessError as e:
+        print(e.stderr)
+        print(e.stdout)
+        exit(1)
+    version = result.stdout.strip()
+    return version
+
 
 
 def _get_package_version(config_path: Path) -> str:
@@ -337,3 +302,5 @@ def _update_package_version(config_path: Path, new_version: str, repo_root: Path
     except Exception as e:
         error(f"Failed to update {config_path}: {e}")
         return False 
+
+
