@@ -78,19 +78,19 @@ jobs:
           # Generate dynamic commit message
           COMMIT_PARTS=()
           if [ -n "${{ github.event.inputs.platform_bump }}" ]; then
-            COMMIT_PARTS+=("platform=${{ github.event.inputs.platform_bump }}")
+            COMMIT_PARTS+=("platform - ${{ github.event.inputs.platform_bump }}")
           fi
           if [ -n "${{ github.event.inputs.backend_bump }}" ]; then
-            COMMIT_PARTS+=("backend=${{ github.event.inputs.backend_bump }}")
+            COMMIT_PARTS+=("backend - ${{ github.event.inputs.backend_bump }}")
           fi
           if [ -n "${{ github.event.inputs.frontend_bump }}" ]; then
-            COMMIT_PARTS+=("frontend=${{ github.event.inputs.frontend_bump }}")
+            COMMIT_PARTS+=("frontend - ${{ github.event.inputs.frontend_bump }}")
           fi
           if [ -n "${{ github.event.inputs.sdk_bump }}" ]; then
-            COMMIT_PARTS+=("sdk=${{ github.event.inputs.sdk_bump }}")
+            COMMIT_PARTS+=("sdk - ${{ github.event.inputs.sdk_bump }}")
           fi
           if [ -n "${{ github.event.inputs.polyphemus_bump }}" ]; then
-            COMMIT_PARTS+=("polyphemus=${{ github.event.inputs.polyphemus_bump }}")
+            COMMIT_PARTS+=("polyphemus - ${{ github.event.inputs.polyphemus_bump }}")
           fi
           
         
