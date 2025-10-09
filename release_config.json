@@ -1,5 +1,6 @@
 {
-  "platform": "patch",
-  "backend": "patch",
-  "frontend": "patch"
+  "platform": "major",
+  "backend": "minor",
+  "frontend": "major",
+  "polyphemus": "minor"
 }
