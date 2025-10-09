@@ -1,4 +1,4 @@
-name: Hello GitHub
+name: Create release
 
 on:
   workflow_dispatch:  # Allows manual triggering
@@ -9,6 +9,29 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        
+      - name: Check release config
+        id: check-config
+        run: |
+          if [ ! -f "release_config.json" ]; then
+            echo "Error: release_config.json not found"
+            exit 1
+          fi
+          echo "release_config.json found"
+          
+      - name: Read release config
+        id: read-config
+        run: |
+          # Read JSON and extract bump values
+          PLATFORM_BUMP=$(jq -r '.platform // empty' release_config.json)
+          BACKEND_BUMP=$(jq -r '.backend // empty' release_config.json)
+          FRONTEND_BUMP=$(jq -r '.frontend // empty' release_config.json)
+          
+          # Set as environment variables for this step and subsequent steps
+          echo "PLATFORM_BUMP=$PLATFORM_BUMP" >> $GITHUB_ENV
+          echo "BACKEND_BUMP=$BACKEND_BUMP" >> $GITHUB_ENV
+          echo "FRONTEND_BUMP=$FRONTEND_BUMP" >> $GITHUB_ENV
+          
         
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -32,7 +55,7 @@ jobs:
       - name: Commit changes
         run: |
           git add .
-          git commit -m "Prepare release: SDK minor version bump"
+          git commit -m "Prepare release: platform $PLATFORM_BUMP, backend $BACKEND_BUMP, frontend $FRONTEND_BUMP"
           
       - name: Push release branch
         run: |
@@ -41,8 +64,11 @@ jobs:
       - name: Create Pull Request
         run: |
           BRANCH_NAME=$(git branch --show-current)
-          gh pr create --title "Release: SDK Minor Version Bump" \
-            --body "This PR contains the automated release changes for SDK minor version bump.
+          gh pr create --title "Release: platform $PLATFORM_BUMP, backend $BACKEND_BUMP, frontend $FRONTEND_BUMP" \
+            --body "This PR contains the automated release changes for:
+          - Platform: $PLATFORM_BUMP
+          - Backend: $BACKEND_BUMP  
+          - Frontend: $FRONTEND_BUMP
           
           ## Changes
           - Version files updated
