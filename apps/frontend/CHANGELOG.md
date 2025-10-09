@@ -7,6 +7,39 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0] - 2025-10-09
+
+### Added
+- Implemented soft deletion for entities, improving data retention and recovery options.
+- Added a friendly error page for non-existent test runs, enhancing user experience.
+- Implemented the "Leave Organization" feature, allowing users to easily remove themselves from organizations.
+- Added an organization settings page, providing a central location for managing organization-related configurations.
+- Added editable test set title functionality, allowing users to customize test set names.
+- Added individual test statistics API and UI, providing detailed performance insights for individual tests.
+- Added a linting script (`lint:errors`) to display only linting errors, improving developer workflow.
+
+### Changed
+- Refactored delete modal messages for consistency across all entities.
+- Updated team management UI to reflect soft delete functionality.
+- Improved test detail charts with dynamic data and enhanced UI.
+- Standardized delete modal messages across all entities.
+- Improved error logging and rate limit messages for better user feedback.
+- Replaced hardcoded styles with theme values in various components for improved maintainability and consistency.
+- Changed field label from 'Title' to 'Name' for clarity.
+
+### Fixed
+- Resolved duplicate import ESLint error in TokensGrid.
+- Improved token deletion confirmation message.
+- Aligned token empty state with the application theme.
+- Increased bottom margin for pie chart legend overflow prevention.
+- Resolved a user deletion 500 error.
+- Removed step prefix from evaluation steps edit fields.
+- Resolved infinite loading issue in the tasks section.
+- Fixed flickering data grid on the test runs page.
+- Resolved an issue where no token display screen was shown.
+- Corrected the API call to use the delete endpoint for test runs instead of status update.
+
+
 ## [0.3.0] - 2025-10-02
 
 ### Added
