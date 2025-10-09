@@ -4,8 +4,17 @@ on:
   workflow_dispatch:  # Allows manual triggering
 
 jobs:
-  hello:
+  release:
     runs-on: ubuntu-latest
     steps:
-      - name: Say Hello
-        run: echo "test create release workflow"
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          
+      - name: Run release script
+        run: |
+          python3 .github/release sdk --minor
