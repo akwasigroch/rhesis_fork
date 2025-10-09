@@ -3,27 +3,33 @@ on:
   workflow_dispatch:
     inputs:
       platform_bump:
-        description: 'Platform version bump (patch/minor/major)'
-        required: true
-        default: 'patch'
+        description: 'Platform version bump'
+        required: false
         type: choice
         options:
           - patch
           - minor
           - major
       backend_bump:
-        description: 'Backend version bump (patch/minor/major)'
-        required: true
-        default: 'patch'
+        description: 'Backend version bump'
+        required: false
         type: choice
         options:
           - patch
           - minor
           - major
       frontend_bump:
-        description: 'Frontend version bump (patch/minor/major)'
-        required: true
-        default: 'patch'
+        description: 'Frontend version bump'
+        required: false
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+
+      sdk_bump:
+        description: 'SDK version bump'
+        required: false
         type: choice
         options:
           - patch
@@ -39,11 +45,21 @@ jobs:
 
       - name: Update release config
         run: |
-          echo "{
-            \"platform\": \"${{ github.event.inputs.platform_bump }}\",
-            \"backend\": \"${{ github.event.inputs.backend_bump }}\",
-            \"frontend\": \"${{ github.event.inputs.frontend_bump }}\"
-          }" > release_config.json
+          # Create JSON using jq 
+          jq -n \
+            --arg platform "${{ github.event.inputs.platform_bump }}" \
+            --arg backend "${{ github.event.inputs.backend_bump }}" \
+            --arg frontend "${{ github.event.inputs.frontend_bump }}" \
+            --arg sdk "${{ github.event.inputs.sdk_bump }}" \
+            '{
+              platform: $platform,
+              backend: $backend,
+              frontend: $frontend,
+              sdk: $sdk
+            } | with_entries(select(.value != ""))' > release_config.json
+          
+          echo "Generated release_config.json:"
+          cat release_config.json
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
