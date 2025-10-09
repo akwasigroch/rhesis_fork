@@ -52,12 +52,12 @@ jobs:
           
       - name: Run release script
         run: |
-          python3 .github/release platform --$PLATFORM_BUMP backend --$BACKEND_BUMP frontend --$FRONTEND_BUMP
+          python3 .github/release --bump-config-file release_config.json
           
       - name: Commit changes
         run: |
           git add .
-          git commit -m "Prepare release: platform $PLATFORM_BUMP, backend $BACKEND_BUMP, frontend $FRONTEND_BUMP"
+          git commit -m "Prepare release"
           
       - name: Push release branch
         run: |
@@ -66,18 +66,32 @@ jobs:
       - name: Create Pull Request
         run: |
           BRANCH_NAME=$(git branch --show-current)
-          gh pr create --title "Release: platform $PLATFORM_BUMP, backend $BACKEND_BUMP, frontend $FRONTEND_BUMP" \
-            --body "This PR contains the automated release changes for:
-          - Platform: $PLATFORM_BUMP
-          - Backend: $BACKEND_BUMP  
-          - Frontend: $FRONTEND_BUMP
+          
+          # Check if version changes JSON file exists
+          if [ ! -f "/tmp/version_changes.json" ]; then
+            echo "Error: /tmp/version_changes.json not found. Cannot create PR without version changes."
+            exit 1
+          fi
+          
+          # Extract version changes dynamically
+          VERSION_CHANGES=$(jq -r 'to_entries | map("\(.key): \(.value)") | join(", ")' /tmp/version_changes.json)
+          
+          # Create title with dynamic version changes
+          PR_TITLE="Release: $VERSION_CHANGES"
+          
+          # Create body with dynamic version changes
+          PR_BODY="This PR contains the automated release changes for:
+          $(jq -r 'to_entries | map("- \(.key | ascii_upcase): \(.value)") | join("\n          ")' /tmp/version_changes.json)
           
           ## Changes
           - Version files updated
           - Changelog updated
           - Release branch created
           
-          Please review the changes before merging." \
+          Please review the changes before merging."
+          
+          gh pr create --title "$PR_TITLE" \
+            --body "$PR_BODY" \
             --base main \
             --head $BRANCH_NAME
         env:
