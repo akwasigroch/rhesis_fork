@@ -94,8 +94,8 @@ jobs:
           fi
           
         
-          COMMIT_MSG="Update release config: $(IFS=', '; echo "${COMMIT_PARTS[*]}")"
-          PR_TITLE_MSG="$(IFS=', '; echo "${COMMIT_PARTS[*]}")"
+          COMMIT_MSG="Update release config: $(printf '%s, ' "${COMMIT_PARTS[@]}" | sed 's/, $//')"
+          PR_TITLE_MSG="$(printf '%s, ' "${COMMIT_PARTS[@]}" | sed 's/, $//')"
       
           echo "COMMIT_MESSAGE=$COMMIT_MSG" >> $GITHUB_ENV
           echo "PR_TITLE_MESSAGE=$PR_TITLE_MSG" >> $GITHUB_ENV
