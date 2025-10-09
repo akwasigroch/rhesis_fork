@@ -13,6 +13,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0] - 2025-10-09
+
+### Changed
+
+- Merge pull request #505 from rhesis-ai/fix/worker-based-generation-issue
+- fix(sdk): handle missing main branch in Makefile git diff
+- style(sdk): fix line length violations in synthesizer factory
+- fix: pull metrics error
+- refactor(sdk): update ParaphrasingSynthesizer to use model parameter
+- feat(sdk): add model parameter support to synthesizer factory
+
+
+
 ## [0.3.0] - 2025-10-02
 
 ### Added
