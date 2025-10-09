@@ -13,6 +13,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0] - 2025-10-09
+
+### Changed
+
+- chore: Enhance release workflow: rename action, add config checks, and dynamically set version bumps for platform, backend, and frontend
+
+
+
 ## [0.3.0] - 2025-10-02
 
 ### Added
