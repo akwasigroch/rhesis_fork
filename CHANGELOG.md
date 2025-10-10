@@ -13,6 +13,35 @@ This is the main changelog for the entire Rhesis repository. For detailed compon
 
 ## [Unreleased]
 
+## [0.4.0] - 2025-10-10
+
+### Platform Release
+
+This release includes the following component versions:
+- **Backend 0.4.0**
+- **SDK 1.0.0**
+
+### Summary of Changes
+
+**Backend v0.4.0:**
+- Added soft delete functionality for users, tests, and other data, including a recycle bin management feature.
+- Implemented data encryption for sensitive information in the database, including tokens and authentication fields.
+- Introduced features for user management, including leaving organizations, re-inviting users, and GDPR user anonymization.
+- Added an endpoint for individual test statistics.
+
+
+**SDK v1.0.0:**
+- Added `model` parameter support to the synthesizer factory, allowing users to specify the model used for synthesis.
+- Refactored `ParaphrasingSynthesizer` to utilize the `model` parameter for improved flexibility.
+- Fixed an issue related to worker-based generation.
+
+
+See individual component changelogs for detailed changes:
+- [Backend Changelog](apps/backend/CHANGELOG.md)
+- [SDK Changelog](sdk/CHANGELOG.md)
+
+
+
 ## [0.3.0] - 2025-10-02
 
 ### Platform Release
