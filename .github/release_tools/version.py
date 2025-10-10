@@ -13,43 +13,6 @@ from .config import COMPONENTS, PLATFORM_VERSION_FILE
 from .utils import success, error, warn, info
 
 
-def _check_virtual_environments() -> Optional[str]:
-    """Check for common virtual environment setups and return activation hint"""
-    hints = []
-    
-    # Check for UV virtual environment in common locations
-    venv_locations = [
-        (Path(".venv"), "source .venv/bin/activate"),
-        (Path("../.venv"), "source ../.venv/bin/activate"),
-        (Path("venv"), "source venv/bin/activate"),
-        (Path("../venv"), "source ../venv/bin/activate"),
-    ]
-    
-    for venv_path, activation_cmd in venv_locations:
-        if venv_path.exists() and (venv_path / "bin" / "activate").exists():
-            hints.append(f"Virtual environment detected at {venv_path.resolve()}. Run: {activation_cmd}")
-            break  # Use the first one found
-    
-    # Check for conda environment file
-    if Path("environment.yml").exists() or Path("environment.yaml").exists():
-        hints.append("Conda environment file detected. Run: conda env create -f environment.yml && conda activate <env-name>")
-    
-    # Check for Poetry
-    if Path("pyproject.toml").exists():
-        try:
-            with open("pyproject.toml", 'r') as f:
-                content = f.read()
-                if "[tool.poetry]" in content:
-                    hints.append("Poetry project detected. Run: poetry install && poetry shell")
-        except Exception:
-            pass
-    
-    # Check for requirements files
-    if Path("requirements.txt").exists():
-        hints.append("Requirements file detected. Run: pip install -r requirements.txt")
-    
-    # Return the most specific hint first
-    return hints[0] if hints else None
 
 
 def get_current_version(component: str, repo_root: Path) -> str:
