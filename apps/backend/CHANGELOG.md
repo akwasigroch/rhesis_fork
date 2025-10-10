@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0] - 2025-10-10
+
+### Added
+- Added a `sample_size` parameter to the test configuration generation, allowing users to specify the desired sample size for tests.
+
+### Changed
+- Refactored the test configuration generation process for improved efficiency and clarity.
+- Enhanced the test configuration schema to better reflect the available options and data structures.
+- Increased the maximum allowable sample size for test configuration generation.
+
+
 ## [0.3.0] - 2025-10-02
 
 ### Added

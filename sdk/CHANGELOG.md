@@ -13,6 +13,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0] - 2025-10-10
+
+### Added
+- Added support for asynchronous API calls using `async` and `await`.
+- Introduced a new `AuthenticationError` exception for handling authentication failures.
+- Added a `configure()` method to allow dynamic configuration of the SDK at runtime.
+
+### Changed
+- Refactored the API request handling to improve performance and reduce latency.
+- Updated the dependency on the `requests` library to version 2.31.0 for security enhancements.
+- Improved error messages for common API errors, providing more context and guidance.
+
+### Fixed
+- Fixed an issue where the SDK would incorrectly handle API responses with empty data.
+- Resolved a bug that caused memory leaks when processing large datasets.
+- Fixed a compatibility issue with Python 3.7.
+
+### Removed
+- Removed the deprecated `legacy_auth()` method. Use the new `authenticate()` method instead.
+
+
 ## [0.3.0] - 2025-10-02
 
 ### Added

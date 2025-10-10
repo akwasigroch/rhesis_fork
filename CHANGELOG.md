@@ -13,6 +13,30 @@ This is the main changelog for the entire Rhesis repository. For detailed compon
 
 ## [Unreleased]
 
+## [0.4.0] - 2025-10-10
+
+### Platform Release
+
+This release includes the following component versions:
+- **Backend 1.0.0**
+- **SDK 1.0.0**
+
+### Summary of Changes
+
+**Backend v1.0.0:**
+- Added sample size parameter to test configuration.
+- Improved test configuration generation and schema.
+
+
+**SDK v1.0.0:**
+Initial release or no significant changes.
+
+See individual component changelogs for detailed changes:
+- [Backend Changelog](apps/backend/CHANGELOG.md)
+- [SDK Changelog](sdk/CHANGELOG.md)
+
+
+
 ## [0.3.0] - 2025-10-02
 
 ### Platform Release
