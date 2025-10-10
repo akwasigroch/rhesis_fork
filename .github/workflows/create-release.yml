@@ -57,6 +57,7 @@ jobs:
           
       - name: Commit changes
         run: |
+          rm -rf release_config.json
           git add .
           git commit -m "Prepare release"
           
