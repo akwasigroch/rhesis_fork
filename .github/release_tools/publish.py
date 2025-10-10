@@ -15,7 +15,21 @@ import re
 from .config import COMPONENTS, PLATFORM_VERSION_FILE, format_component_name
 from .version import get_current_version
 from .utils import info, warn, error, success, log
-from .cli import find_repository_root
+
+
+
+def find_repository_root() -> Path:
+    """Find the repository root directory"""
+    repo_root = Path.cwd()
+    while repo_root != repo_root.parent:
+        if (repo_root / '.git').exists():
+            break
+        repo_root = repo_root.parent
+    else:
+        error("Not in a git repository")
+        sys.exit(1)
+    
+    return repo_root
 
 
 def _try_auto_environment_setup() -> bool:
