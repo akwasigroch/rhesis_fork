@@ -1,5 +1,6 @@
 {
   "platform": "minor",
   "backend": "major",
-  "sdk": "patch"
+  "frontend": "major",
+  "sdk": "minor"
 }
