@@ -11,10 +11,11 @@ import sys
 import os
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
-
+import re 
 from .config import COMPONENTS, PLATFORM_VERSION_FILE, format_component_name
 from .version import get_current_version
 from .utils import info, warn, error, success, log
+from .cli import find_repository_root
 
 
 def _try_auto_environment_setup() -> bool:
@@ -175,6 +176,23 @@ def create_and_push_tag(component: str, version: str, dry_run: bool = False) -> 
         return False
 
 
+def get_changelog_content(changelog_path: Path) -> str:
+# Read the changelog file
+    with open(changelog_path, 'r', encoding='utf-8') as file:
+        content = file.read()
+
+    # Extract the first version section (latest) using regex
+    # Pattern breakdown:
+    # ^## \[([^\]]+)\] - (\d{4}-\d{2}-\d{2})\n  - matches version header like "## [0.4.0] - 2025-10-10"
+    # (.*?)  - captures all content after the header (non-greedy)
+    # (?=\n## \[|\Z)  - stops at next version header or end of file (positive lookahead)
+    pattern = r'^## \[([^\]]+)\] - (\d{4}-\d{2}-\d{2})\n(.*?)(?=\n## \[|\Z)'
+    match = re.search(pattern, content, re.MULTILINE | re.DOTALL)
+    changelog_content = match.group(3)
+    return changelog_content
+
+
+
 def create_github_release(component: str, version: str, tag_name: str, dry_run: bool = False, set_as_latest: bool = False) -> bool:
     """Create a GitHub release for a component"""
     if dry_run:
@@ -187,11 +205,13 @@ def create_github_release(component: str, version: str, tag_name: str, dry_run: 
         result = subprocess.run(["which", "gh"], capture_output=True)
         if result.returncode == 0:
             # Use GitHub CLI
+            repo_root = find_repository_root()
             release_title = f"{format_component_name(component)} v{version}"
+            changelog_content = get_changelog_content(repo_root / COMPONENTS[component].changelog_path)
             cmd = [
                 "gh", "release", "create", tag_name,
                 "--title", release_title,
-                "--generate-notes"
+                "notes", changelog_content
             ]
             
             # Add latest flag for platform releases
@@ -254,8 +274,12 @@ def confirm_publish_action(components_to_publish: Dict[str, str], remote_tags: L
         return False
     
     print()
-    response = input("Do you want to proceed with publishing? (y/N): ").strip().lower()
-    return response == 'y'
+    if os.environ.get('GITHUB_ACTIONS') == 'true':
+        info("Publishing in GitHub Actions - skipping confirmation")
+        return True
+    else:
+        response = input("Do you want to proceed with publishing? (y/N): ").strip().lower()
+        return response == 'y'
 
 
 def publish_releases(repo_root: Path, dry_run: bool = False) -> bool:
