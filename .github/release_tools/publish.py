@@ -324,6 +324,10 @@ def publish_releases(repo_root: Path, dry_run: bool = False) -> bool:
         error("Failed to get current branch")
         return False
     
+    if not current_branch.startswith("release/"):
+        error("Not on a release branch")
+        return False
+    
     info(f"Current branch: {current_branch}")
     
     # Parse components from branch
