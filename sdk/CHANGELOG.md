@@ -13,6 +13,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.1] - 2025-10-10
+
+### Added
+- Added `model` parameter support to the synthesizer factory, allowing users to specify the desired model for text generation.
+
+### Changed
+- Refactored `ParaphrasingSynthesizer` to utilize the new `model` parameter for improved model selection.
+
+### Fixed
+- Resolved an issue where worker-based generation could fail.
+- Fixed an error related to pulling metrics.
+- Improved Makefile git diff handling to prevent errors when the `main` branch is missing.
+
+
 ## [0.3.0] - 2025-10-02
 
 ### Added
