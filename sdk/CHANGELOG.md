@@ -13,6 +13,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0] - 2025-10-10
+
+### Added
+- Added `model` parameter support to the synthesizer factory, allowing specification of the model to be used for paraphrasing.
+- Added `push` and `pull` functionality to metrics, enabling the sending and retrieval of metric data.
+- Added support for enums in metrics configurations.
+- Added the ability to pull metrics by name or ID.
+
+### Changed
+- Refactored the `ParaphrasingSynthesizer` to utilize the `model` parameter for specifying the model.
+- Refactored metric classes to extract common functionality into base classes, improving code organization and maintainability.
+- Updated metric backend to use `rhesis` instead of `native`.
+- Updated SDK client to include metrics endpoints for interacting with the metrics API.
+- Improved configuration handling for metrics, including `to_config` and `from_config` methods.
+
+### Fixed
+- Fixed an issue related to worker-based generation.
+- Fixed handling of missing `main` branch in Makefile git diff.
+- Fixed linting errors in `test_metric.py`.
+- Fixed an error related to pulling metrics.
+- Fixed default arguments for `prompt_metric_categorical`.
+- Fixed enum and string validation in metrics.
+- Fixed an issue where `BaseMetric` did not properly accept enums.
+- Fixed a `raise for status` error in the SDK client.
+- Fixed an issue with passing categories in metrics.
+- Fixed handling of `None` config in prompt synthesizer.
+- Fixed data leakage in `test_metric.py` by migrating to new session management.
+
+
 ## [0.3.0] - 2025-10-02
 
 ### Added

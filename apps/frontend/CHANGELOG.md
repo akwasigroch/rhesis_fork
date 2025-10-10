@@ -7,6 +7,46 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0] - 2025-10-10
+
+### Added
+- **Test Runs:** Comprehensive comparison view with filtering and theme-compliant styling.
+- **Test Runs Detail Page:** Tasks & Comments tab to test detail panel.
+- **Test Runs Detail Page:** Redesigned with a modern dashboard interface.
+- **Error Handling:** Friendly error page for non-existent test runs.
+- **Organization Settings:** Organization settings page with leave organization feature.
+- **Test Sets:** Editable test set title functionality.
+- **API:** Method to fetch individual test statistics and corresponding TypeScript interfaces.
+
+### Changed
+- **Test Runs:** Improved status card layout and typography in TestRunHeader.
+- **Tokens:** Standardized delete modal messages across all entities.
+- **Tokens:** Improved token deletion confirmation message.
+- **Team Management:** Updated UI for soft delete.
+- **UI:** Refactored test detail charts with dynamic data and enhanced UI.
+- **UI:** Improved error logging and rate limit messages.
+- **Tasks & Comments:** Changed field label from 'Title' to 'Name'.
+
+### Fixed
+- **TypeScript:** Resolved various TypeScript errors in test runs components and related components.
+- **Tokens:** Resolved duplicate import ESLint error in TokensGrid.
+- **Tokens:** Aligned token empty state with theme.
+- **Tokens:** Increased bottom margin for pie chart legend overflow prevention.
+- **Test Runs:** Used delete endpoint for test runs instead of status update.
+- **Test Runs:** Resolved flickering data grid on test runs page.
+- **Tasks Section:** Resolved infinite loading.
+- **DangerZone:** Replaced hardcoded styles with theme values.
+- **User Deletion:** Resolved user deletion 500 error.
+- **Domain Settings:** Escaped apostrophes in DomainSettingsForm text.
+- **Evaluation Steps:** Removed step prefix from evaluation steps edit fields.
+- **UI:** Improved vertical centering and removed inline styles.
+
+### Removed
+- **Test Runs:** Removed hover animation from summary cards.
+- **Test Runs:** Removed elevation from Tasks & Comments in test detail tab.
+- **DangerZone:** Removed inline styles.
+
+
 ## [0.3.0] - 2025-10-02
 
 ### Added
