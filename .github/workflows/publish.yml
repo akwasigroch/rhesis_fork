@@ -57,3 +57,8 @@ jobs:
       environment: prd
       reason: "Release deployment to prd"
     secrets: inherit      
+
+  sdk-pypi-publish:
+    needs: publish
+    uses: ./.github/workflows/publish-sdk.yml
+    secrets: inherit
