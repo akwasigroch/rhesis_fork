@@ -80,82 +80,31 @@ def get_current_branch() -> Optional[str]:
         return None
 
 
-def parse_release_branch_components(branch_name: str, repo_root: Path) -> Dict[str, str]:
+def get_components_version(branch_name: str, repo_root: Path) -> Dict[str, str]:
     """Parse component versions from a release branch name"""
     components_versions = {}
     
-    if not branch_name.startswith("release/"):
-        return components_versions
-    
-    # Handle different branch naming patterns
-    release_part = branch_name.replace("release/", "")
-    
-    if release_part.startswith("v"):
-        # Platform release: release/v1.0.0
-        platform_version = release_part[1:]  # Remove 'v'
-        components_versions["platform"] = platform_version
-        
-        # For platform releases, include all components at their current versions
-        for component in COMPONENTS.keys():
-            try:
-                current_version = get_current_version(component, repo_root)
-                if current_version and current_version != "0.1.0":  # Skip default versions
-                    components_versions[component] = current_version
-                elif current_version == "0.1.0":
-                    info(f"Component {component} has default version 0.1.0 - skipping")
-            except Exception as e:
-                warn(f"Failed to get version for component {component}: {e}")
-                warn(f"Skipping component {component} due to version detection failure")
-                continue
-                
-    elif "-v" in release_part:
-        # Component release: release/backend-v1.0.0 or release/multi-v1.0.0
-        if release_part.startswith("multi-"):
-            # Multi-component release
-            version = release_part.replace("multi-v", "")
-            if version:
-                # Try to determine which components have this version
-                for component in COMPONENTS.keys():
-                    try:
-                        current_version = get_current_version(component, repo_root)
-                        if current_version == version:
-                            components_versions[component] = version
-                    except Exception:
-                        continue
-        else:
-            # Single component release
-            parts = release_part.split("-v")
-            if len(parts) == 2:
-                component, version = parts
-                if component in COMPONENTS or component == "platform":
-                    components_versions[component] = version
-    
-    # If we couldn't parse from branch name, fall back to reading current versions
-    if not components_versions:
-        warn(f"Could not parse components from branch name: {branch_name}")
-        warn("Falling back to reading current versions from files")
-        
-        # Check all components for versions different from default
-        for component in COMPONENTS.keys():
-            try:
-                current_version = get_current_version(component, repo_root)
-                if current_version and current_version != "0.1.0":
-                    components_versions[component] = current_version
-                elif current_version == "0.1.0":
-                    info(f"Component {component} has default version 0.1.0 - skipping")
-            except Exception as e:
-                warn(f"Failed to get version for component {component}: {e}")
-                warn(f"Skipping component {component} due to version detection failure")
-                continue
-        
-        # Check platform version
+    # Check all components for versions different from default
+    for component in COMPONENTS.keys():
         try:
-            platform_version = get_current_version("platform", repo_root)
-            if platform_version and platform_version != "0.0.0":
-                components_versions["platform"] = platform_version
+            current_version = get_current_version(component, repo_root)
+            if current_version and current_version != "0.1.0":
+                components_versions[component] = current_version
+            elif current_version == "0.1.0":
+                info(f"Component {component} has default version 0.1.0 - skipping")
         except Exception as e:
-            warn(f"Failed to get platform version: {e}")
-            warn("Skipping platform due to version detection failure")
+            warn(f"Failed to get version for component {component}: {e}")
+            warn(f"Skipping component {component} due to version detection failure")
+            continue
+    
+    # Check platform version
+    try:
+        platform_version = get_current_version("platform", repo_root)
+        if platform_version and platform_version != "0.0.0":
+            components_versions["platform"] = platform_version
+    except Exception as e:
+        warn(f"Failed to get platform version: {e}")
+        warn("Skipping platform due to version detection failure")
     
     return components_versions
 
@@ -332,7 +281,7 @@ def publish_releases(repo_root: Path, dry_run: bool = False) -> bool:
     
     # Parse components from branch
     try:
-        components_to_publish = parse_release_branch_components(current_branch, repo_root)
+        components_to_publish = get_components_version(current_branch, repo_root)
     except Exception as e:
         error(f"Failed to parse release components: {e}")
         return False
