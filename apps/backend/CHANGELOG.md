@@ -7,6 +7,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0] - 2025-10-10
+
+### Added
+- Implemented soft delete functionality for users and tests, including a recycle bin management feature.
+- Added support for re-inviting users who have left organizations.
+- Implemented GDPR user anonymization function.
+- Added encryption to sensitive data in Model, Token, and Endpoint tables.
+- Added hash-based token lookup for encrypted tokens.
+- Added an endpoint for retrieving individual test statistics.
+
+### Changed
+- Updated CRUD utilities and QueryBuilder to support soft deletion.
+- Enhanced test configuration generation and schema.
+- Test statistics have been moved to a dedicated stats module.
+- The Source schema has been migrated to Pydantic V2 ConfigDict.
+
+### Fixed
+- Resolved issues with soft delete filtering in raw queries and tests.
+- Corrected organization filtering and token count accuracy.
+- Fixed a 500 error encountered during user removal by implementing soft delete.
+- Addressed an issue with worker-based generation.
+- Explicitly set the Gemini model in test generation.
+- Maintained backward compatibility for the `delete_item` return type.
+
+### Removed
+- Removed legacy comment lines in `database.py`.
+- Removed unused `import rhesis` from Alembic migrations.
+- Removed SDK configuration and added model parameter for test generation.
+
+
 ## [0.3.0] - 2025-10-02
 
 ### Added

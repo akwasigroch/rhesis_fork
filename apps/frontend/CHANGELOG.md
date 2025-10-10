@@ -7,6 +7,46 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0] - 2025-10-10
+
+### Added
+- **Test Runs:** Added a comprehensive comparison view with filtering and theme-compliant styling.
+- **Test Runs:** Added a "Tasks & Comments" tab to the test detail panel.
+- **Test Runs:** Added a friendly error page for non-existent test runs.
+- **Organization Settings:** Added an organization settings page.
+- **Organization Settings:** Implemented a "Leave Organization" feature.
+- **Test Sets:** Added editable test set title functionality.
+- **API:** Added a method to fetch individual test statistics.
+- **API:** Added TypeScript interfaces for individual test statistics.
+
+### Changed
+- **Test Runs:** Redesigned the test runs detail page with a modern dashboard interface.
+- **Tokens Grid:** Improved token deletion confirmation message.
+- **Delete Modals:** Standardized delete modal messages across all entities.
+- **Team Management:** Updated team management UI for soft delete.
+- **Test Detail Charts:** Refactored test detail charts with dynamic data and enhanced UI.
+- **UI:** Improved error logging and rate limit messages.
+- Changed field label from 'Title' to 'Name' in relevant components.
+
+### Fixed
+- **Test Runs:** Resolved TypeScript errors in test runs components.
+- **Test Runs:** Resolved flickering data grid on the test runs page.
+- **Tokens Grid:** Resolved duplicate import ESLint error in TokensGrid.
+- **Tokens Grid:** Aligned token empty state with theme.
+- **Pie Chart:** Increased bottom margin for pie chart legend overflow prevention.
+- **User Deletion:** Resolved user deletion 500 error.
+- **DangerZone:** Replaced hardcoded styles with theme values.
+- **Tasks Section:** Resolved infinite loading in tasks section.
+- **Domain Settings:** Escaped apostrophes in DomainSettingsForm text.
+- **Evaluation Steps:** Removed step prefix from evaluation steps edit fields.
+- **Test Runs:** Use delete endpoint for test runs instead of status update.
+
+### Removed
+- **Test Runs:** Removed hover animation from summary cards.
+- **Test Runs:** Removed elevation from Tasks & Comments in test detail tab.
+- **UI:** Removed unused ReactElement import from navigation types.
+
+
 ## [0.3.0] - 2025-10-02
 
 ### Added

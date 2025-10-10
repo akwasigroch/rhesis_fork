@@ -13,6 +13,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0] - 2025-10-10
+
+### Added
+- Added support for `model` parameter to the synthesizer factory, allowing users to specify the model to be used for paraphrasing.
+- Added functionality to push and pull metrics to the Rhesis backend. This includes support for numeric and categorical prompt metrics.
+- Added validation for min/max scores in metrics configuration.
+- Added functionality to pull metrics by name or ID.
+- Added `from_config` method to `PromptMetric` for clarity.
+
+### Changed
+- Refactored `ParaphrasingSynthesizer` to utilize the `model` parameter.
+- Refactored metric classes to extract common functionality into base classes.
+- Updated metric backend to use `rhesis` instead of `native`.
+- Improved metric configuration to accept enums for categorical values.
+- Updated SDK client to include params and url_params processing.
+
+### Fixed
+- Fixed an issue related to worker-based generation.
+- Fixed handling of missing main branch in Makefile git diff.
+- Fixed an error when pulling metrics.
+- Resolved linting errors in `test_metric.py`.
+- Fixed default arguments for `prompt_metric_categorical`.
+- Fixed enum and string validation in metrics.
+- Fixed issue where `PromptMetric` was not accepting enums.
+- Fixed backend configuration to be configurable.
+- Fixed issue where errors were not raised for incorrect metrics.
+- Fixed prompt metric imports.
+- Fixed handling of `None` config in prompt synthesizer.
+
+### Style
+- Fixed line length violations in synthesizer factory.
+- Removed trailing whitespace in `test_metric.py`.
+
+
 ## [0.3.0] - 2025-10-02
 
 ### Added

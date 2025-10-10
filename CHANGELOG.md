@@ -13,6 +13,45 @@ This is the main changelog for the entire Rhesis repository. For detailed compon
 
 ## [Unreleased]
 
+## [0.4.0] - 2025-10-10
+
+### Platform Release
+
+This release includes the following component versions:
+- **Backend 1.0.0**
+- **Frontend 0.4.0**
+- **SDK 1.0.0**
+
+### Summary of Changes
+
+**Backend v1.0.0:**
+- Added soft delete functionality for users and tests, including recycle bin management and GDPR user anonymization.
+- Implemented encryption for sensitive data in Model, Token, and Endpoint models.
+- Added support for re-inviting users who have left organizations.
+- Introduced individual test statistics endpoint and refactored test configuration generation.
+
+
+**Frontend v0.4.0:**
+- Added comprehensive test run comparison view with filtering.
+- Redesigned test runs detail page with a modern dashboard interface, including Tasks & Comments tab.
+- Implemented organization settings page with features like leaving the organization and user deletion.
+- Added editable test set title functionality.
+
+
+**SDK v1.0.0:**
+- Added support for pushing and pulling metrics, including numeric and categorical prompt metrics.
+- Introduced a `model` parameter to the Synthesizer Factory and updated the ParaphrasingSynthesizer to utilize it.
+- Improved configuration and validation for metrics, including support for enums.
+- Fixed issues related to worker-based generation and improved test suite stability.
+
+
+See individual component changelogs for detailed changes:
+- [Backend Changelog](apps/backend/CHANGELOG.md)
+- [Frontend Changelog](apps/frontend/CHANGELOG.md)
+- [SDK Changelog](sdk/CHANGELOG.md)
+
+
+
 ## [0.3.0] - 2025-10-02
 
 ### Platform Release
