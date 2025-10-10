@@ -104,9 +104,6 @@ def parse_release_branch_components(branch_name: str, repo_root: Path) -> Dict[s
                 elif current_version == "0.1.0":
                     info(f"Component {component} has default version 0.1.0 - skipping")
             except Exception as e:
-                if "TOML parser not available" in str(e):
-                    # Re-raise TOML parser errors to trigger auto-environment setup
-                    raise e
                 warn(f"Failed to get version for component {component}: {e}")
                 warn(f"Skipping component {component} due to version detection failure")
                 continue
@@ -147,9 +144,6 @@ def parse_release_branch_components(branch_name: str, repo_root: Path) -> Dict[s
                 elif current_version == "0.1.0":
                     info(f"Component {component} has default version 0.1.0 - skipping")
             except Exception as e:
-                if "TOML parser not available" in str(e):
-                    # Re-raise TOML parser errors to trigger auto-environment setup
-                    raise e
                 warn(f"Failed to get version for component {component}: {e}")
                 warn(f"Skipping component {component} due to version detection failure")
                 continue
