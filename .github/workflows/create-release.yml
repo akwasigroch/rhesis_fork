@@ -102,4 +102,18 @@ jobs:
             --head $BRANCH_NAME
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
+  backend-deploy:
+    needs: release
+    uses: ./.github/workflows/backend.yml
+    with:
+      environment: stg
+      reason: "Release deployment to staging"
+    secrets: inherit
+
+  frontend-deploy:
+    needs: release
+    uses: ./.github/workflows/frontend.yml
+    with:
+      environment: stg
+      reason: "Release deployment to staging"
+    secrets: inherit
