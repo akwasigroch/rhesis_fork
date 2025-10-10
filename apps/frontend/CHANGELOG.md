@@ -7,6 +7,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0] - 2025-10-10
+
+### Added
+- Implemented "Leave Organization" feature, allowing users to remove themselves from an organization.
+- Added an organization settings page for managing organization-level configurations.
+- Added a friendly error page for non-existent test runs.
+- Added editable test set title functionality.
+- Added `lint:errors` script to show only linting errors.
+- Added dynamic data and enhanced UI for test detail charts.
+
+### Changed
+- Updated team management UI to support soft deletion of team members.
+- Standardized delete modal messages across all entities for consistency.
+- Improved error logging and rate limit messages for better user feedback.
+- Replaced hardcoded styles with theme values in the Danger Zone and other components for better maintainability and theming consistency.
+- Test runs are now deleted using the DELETE endpoint instead of a status update.
+- Changed field label from 'Title' to 'Name' in relevant forms.
+
+### Fixed
+- Resolved a user deletion 500 error by implementing a user deletion procedure that preserves the organization.
+- Fixed an issue where the token display screen would sometimes not appear.
+- Resolved a duplicate import ESLint error in the TokensGrid component.
+- Improved the token deletion confirmation message for clarity.
+- Aligned the token empty state with the current theme.
+- Increased the bottom margin for the pie chart legend to prevent overflow.
+- Removed the step prefix from evaluation steps edit fields.
+- Fixed flickering data grid on the test runs page.
+- Resolved infinite loading in the tasks section.
+- Fixed apostrophes escaping in DomainSettingsForm text.
+
+
 ## [0.3.0] - 2025-10-02
 
 ### Added

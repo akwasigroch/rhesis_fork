@@ -7,6 +7,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0] - 2025-10-10
+
+### Added
+- Implemented encryption for sensitive data in Model, Token, and Endpoint models.
+- Added hash-based token lookup for encrypted tokens.
+- Added recycle bin management endpoints.
+- Implemented "leave organization" feature for users.
+- Added user deletion procedure that preserves organization data.
+- Added hard delete procedure for user and organization data.
+- Added GDPR user anonymization function.
+- Added support for re-inviting users who have left organizations.
+- Added individual test statistics endpoint.
+
+### Changed
+- Implemented soft deletion for users and tests instead of hard deletion.
+- Updated CRUD utilities and QueryBuilder to support soft deletion.
+- Enhanced database queries with automatic soft delete filtering.
+- Refactored test statistics into a dedicated stats module.
+
+### Fixed
+- Resolved issues with soft delete filtering in raw queries.
+- Fixed a 500 error encountered during user removal by implementing soft deletion.
+- Maintained backward compatibility for the `delete_item` return type.
+- Resolved issues with worker-based generation.
+- Explicitly set Gemini model in test generation.
+
+### Removed
+- Removed legacy comment lines in `database.py`.
+- Removed SDK configuration and added model parameter.
+
+
 ## [0.3.0] - 2025-10-02
 
 ### Added
