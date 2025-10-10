@@ -1,0 +1,5 @@
+{
+  "platform": "minor",
+  "backend": "major",
+  "sdk": "major"
+}
