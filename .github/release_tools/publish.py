@@ -32,57 +32,6 @@ def find_repository_root() -> Path:
     return repo_root
 
 
-def _try_auto_environment_setup() -> bool:
-    """Try to automatically set up the correct environment"""
-    # Check if we're already in a virtual environment
-    if hasattr(sys, 'real_prefix') or (hasattr(sys, 'base_prefix') and sys.base_prefix != sys.prefix):
-        return False  # Already in virtual env, but still having issues
-    
-    # Check for UV virtual environment in common locations
-    venv_locations = [
-        Path(".venv"),           # Project root
-        Path("../.venv"),        # Parent directory (common with UV)
-        Path("venv"),            # Alternative name
-        Path("../venv"),         # Parent alternative
-    ]
-    
-    for venv_path in venv_locations:
-        if venv_path.exists() and (venv_path / "bin" / "activate").exists():
-            warn(f"Virtual environment detected at: {venv_path.resolve()}")
-            warn("Attempting to auto-run in virtual environment...")
-            
-            # Try to re-run the current command in the virtual environment
-            try:
-                # Get the current command arguments
-                current_cmd = sys.argv
-                script_path = current_cmd[0]
-                args = current_cmd[1:]
-                
-                # Build the command to run in the virtual environment
-                venv_python = venv_path / "bin" / "python3"
-                if not venv_python.exists():
-                    venv_python = venv_path / "bin" / "python"
-                
-                if not venv_python.exists():
-                    warn(f"Virtual environment Python not found in: {venv_path}")
-                    continue
-                
-                cmd = [str(venv_python), script_path] + args
-                
-                info(f"Auto-running in virtual environment...")
-                info(f"Command: {' '.join(cmd)}")
-                
-                # Execute in the virtual environment
-                result = subprocess.run(cmd, cwd=os.getcwd())
-                sys.exit(result.returncode)
-                
-            except Exception as e:
-                warn(f"Failed to auto-activate virtual environment at {venv_path}: {e}")
-                continue
-    
-    return False
-
-
 def get_current_branch() -> Optional[str]:
     """Get the current git branch name"""
     try:
