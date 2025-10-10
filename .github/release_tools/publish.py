@@ -221,11 +221,14 @@ def create_github_release(component: str, version: str, tag_name: str, dry_run: 
             # Use GitHub CLI
             repo_root = find_repository_root()
             release_title = f"{format_component_name(component)} v{version}"
-            changelog_content = get_changelog_content(repo_root / COMPONENTS[component].changelog_path)
+            if component == "platform":
+                changelog_content = get_changelog_content(repo_root / "CHANGELOG.md")
+            else:
+                changelog_content = get_changelog_content(repo_root / COMPONENTS[component].changelog_path)
             cmd = [
                 "gh", "release", "create", tag_name,
                 "--title", release_title,
-                "notes", changelog_content
+                "--notes", changelog_content
             ]
             
             # Add latest flag for platform releases
