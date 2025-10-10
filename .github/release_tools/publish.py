@@ -281,23 +281,13 @@ def publish_releases(repo_root: Path, dry_run: bool = False) -> bool:
     
     # Parse components from branch
     try:
-        components_to_publish = get_components_version(current_branch, repo_root)
+        components_version = get_components_version(current_branch, repo_root)
     except Exception as e:
         error(f"Failed to parse release components: {e}")
         return False
     
-    # Check if we successfully got components (either initially or after auto-installation)
-    if 'components_to_publish' not in locals():
-        error("Failed to detect components for publishing")
-        return False
-    
-    if not components_to_publish:
-        error("No components found to publish")
-        error("Make sure you're on a release branch (release/...)")
-        return False
-    
-    log("Found components to publish:")
-    for component, version in components_to_publish.items():
+    log("Current components version:")
+    for component, version in components_version.items():
         info(f"  {component}: v{version}")
     
     # Get remote tags
@@ -312,7 +302,7 @@ def publish_releases(repo_root: Path, dry_run: bool = False) -> bool:
     platform_version = None
     other_components = []
     
-    for component, version in components_to_publish.items():
+    for component, version in components_version.items():
         tag_name = generate_tag_name(component, version)
         if tag_name not in remote_tags:
             if component == "platform":
@@ -346,7 +336,7 @@ def publish_releases(repo_root: Path, dry_run: bool = False) -> bool:
         return True
     
     # Ask for confirmation
-    if not confirm_publish_action(components_to_publish, remote_tags):
+    if not confirm_publish_action(components_version, remote_tags):
         info("Publish cancelled by user")
         return False
     
