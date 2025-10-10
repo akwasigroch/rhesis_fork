@@ -336,39 +336,8 @@ def publish_releases(repo_root: Path, dry_run: bool = False) -> bool:
     try:
         components_to_publish = parse_release_branch_components(current_branch, repo_root)
     except Exception as e:
-        if "TOML parser not available" in str(e):
-            error("Environment setup issue detected!")
-            
-            # Try automatic environment setup first
-            if _try_auto_environment_setup():
-                return True  # Script will re-run in correct environment
-            
-            # If auto-environment setup failed, try installing libraries directly
-            from .version import _try_install_toml_libraries
-            warn("Attempting to install TOML libraries in current environment...")
-            
-            if _try_install_toml_libraries():
-                info("TOML libraries installed successfully! Retrying component detection...")
-                try:
-                    components_to_publish = parse_release_branch_components(current_branch, repo_root)
-                    # If successful, continue with the rest of the function below
-                except Exception as retry_e:
-                    error(f"Still failed after installing libraries: {retry_e}")
-                    return False
-            else:
-                # Manual instructions as final fallback
-                error("Automatic installation failed. Please set up your environment manually:")
-                error("1. Activate your virtual environment:")
-                error("   source .venv/bin/activate  # for UV")
-                error("   conda activate <env-name>  # for Conda") 
-                error("   poetry shell               # for Poetry")
-                error("2. Install required libraries:")
-                error("   pip install tomli tomli-w")
-                error("3. Re-run the release command")
-                return False
-        else:
-            error(f"Failed to parse release components: {e}")
-            return False
+        error(f"Failed to parse release components: {e}")
+        return False
     
     # Check if we successfully got components (either initially or after auto-installation)
     if 'components_to_publish' not in locals():
