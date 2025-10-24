@@ -2,26 +2,18 @@ name: "[Release] 2. Create and deploy (stg)"
 
 on:
   workflow_dispatch:  # Allows manual triggering
-  schedule:
-    # The time is in UTC. 7:04 UTC = 10:04 CET. Need to be adjusted after the time change
-    # The workflow is scheduled not to be on the full hour, because full hours are busy
-    # for GitHub Actions and delays can be expected.
-    - cron: '4 7 * * 4' 
 
 
 jobs:
   release:
     runs-on: ubuntu-latest
-    env:
-      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
     steps:
-
       - name: Generate a token
         id: generate-token
         uses: actions/create-github-app-token@v2
         with:
-          app-id: ${{ vars.RHEO_APP_ID }}
-          private-key: ${{ secrets.RHEO_APP_PRIVATE_KEY }}
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
 
       - name: Checkout code
         uses: actions/checkout@v4
@@ -32,126 +24,11 @@ jobs:
       - name: Set up Git
         run: |
             git config user.name "rheo-app[bot]"
-            git config user.email "237771051+rheo-app[bot]@users.noreply.github.com"
+            git config user.email "237728121+rheo-app[bot]@users.noreply.github.com"
 
 
-      - name: Check release config
-        id: check-config
+      - name: Merge PR
         run: |
-          if [ ! -f "release_config.json" ]; then
-            echo "Error: release_config.json not found"
-            exit 1
-          fi
-          echo "release_config.json found"
-          
-      - name: Read release config
-        id: read-config
-        run: |
-          # Read JSON and extract bump values
-          PLATFORM_BUMP=$(jq -r '.platform // empty' release_config.json)
-          BACKEND_BUMP=$(jq -r '.backend // empty' release_config.json)
-          FRONTEND_BUMP=$(jq -r '.frontend // empty' release_config.json)
-          
-          # Set as environment variables for this step and subsequent steps
-          echo "PLATFORM_BUMP=$PLATFORM_BUMP" >> $GITHUB_ENV
-          echo "BACKEND_BUMP=$BACKEND_BUMP" >> $GITHUB_ENV
-          echo "FRONTEND_BUMP=$FRONTEND_BUMP" >> $GITHUB_ENV
-          
-        
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
-
-      - name: Install uv for SDK
-        uses: astral-sh/setup-uv@v6
-        with:
-            version: latest
-      - name: Set up Git
-        run: |
-            git config user.name "github-actions[bot]"
-            git config user.email "github-actions[bot]@users.noreply.github.com"
-          
-      - name: Run release script
-        run: |
-          python3 .github/release --bump-config-file release_config.json
-          
-      - name: Commit changes
-        run: |
-          rm -rf release_config.json
-          git add .
-          git commit -m "Prepare release"
-          
-      - name: Push release branch
-        run: |
-          git push origin $(git branch --show-current)
-          
-      - name: Create Pull Request
-        run: |
-          BRANCH_NAME=$(git branch --show-current)
-          
-          # Check if version changes JSON file exists
-          if [ ! -f "/tmp/version_changes.json" ]; then
-            echo "Error: /tmp/version_changes.json not found. Cannot create PR without version changes."
-            exit 1
-          fi
-          
-          # Extract version changes dynamically
-          VERSION_CHANGES=$(jq -r 'to_entries | map("\(.key): \(.value)") | join(", ")' /tmp/version_changes.json)
-          
-          # Create title with dynamic version changes
-          PR_TITLE="Release: $VERSION_CHANGES"
-          
-          # Create body with dynamic version changes
-          PR_BODY="This PR contains the automated release changes for:
-          $(jq -r 'to_entries | map("- \(.key | ascii_upcase): \(.value)") | join("\n")' /tmp/version_changes.json)
-          
-
-          ## How the release process works
-          1. The current pull request contains the version changes in the configuration files and changelogs
-          2. Review the generated changelogs
-          3. Check if the version changes are correct
-          4. Check if the SDK and backend tests pass
-          5. Give the team time for review and hotfixes. Hotfixes must be merged into the release branch.
-          6. Once the release branch is approved, it can be merged into main.
-          7. After the merge, you need to run the \"Release - 3. Publish and deploy (prd)\" workflow.  **The workflow must be run on the release branch.** The workflow will deploy the app to the production environment and upload the new version of the SDK to PyPI.
-
-
-
-          ## Changes
-          - Version files updated
-          - Changelog updated
-          - Release branch created
-          
-          "
-          
-          gh pr create --title "$PR_TITLE" \
-            --body "$PR_BODY" \
-            --base main \
-            --head $BRANCH_NAME
+          gh pr merge --auto
         env:
           GH_TOKEN: ${{ steps.generate-token.outputs.token }}
-
-  backend-deploy:
-    needs: release
-    uses: ./.github/workflows/backend.yml
-    with:
-      environment: stg
-      reason: "Release deployment to staging"
-    secrets: inherit
-
-  frontend-deploy:
-    needs: release
-    uses: ./.github/workflows/frontend.yml
-    with:
-      environment: stg
-      reason: "Release deployment to staging"
-    secrets: inherit
-
-  worker-deploy:
-    needs: release
-    uses: ./.github/workflows/worker.yml
-    with:
-      environment: dev
-      reason: "Release deployment to dev"
-    secrets: inherit
