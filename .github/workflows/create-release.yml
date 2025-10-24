@@ -29,6 +29,6 @@ jobs:
 
       - name: Merge PR
         run: |
-          gh pr merge --auto
+          gh pr merge --auto --merge
         env:
           GH_TOKEN: ${{ steps.generate-token.outputs.token }}
